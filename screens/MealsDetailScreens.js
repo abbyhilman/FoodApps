@@ -6,7 +6,7 @@ import { DrawerActions } from '@react-navigation/native'
 import Color from '../constants/Color'
 import DefaultText from '../components/DefaultText'
 import { useDispatch, useSelector } from 'react-redux'
-
+import * as favoriteAction from '../store/action/favorites'
 
 const ListItem = (props) => {
     return (
@@ -19,14 +19,17 @@ const ListItem = (props) => {
 
 
 const MealsDetailScreens = (props) => {
+    const dispatch = useDispatch()
     const catid = props.route.params?.categoriId ?? null
     const category = useSelector(state => state.categori.categori.find(cat => cat.id === catid))
     const recep = useSelector(state => state.recep.recep.filter((rec) => rec.categoryId === category.id))
     const merge = [...recep, category]
     const [urlImage, seturlImage] = useState("")
     const [isFavorite, setisFavorite] = useState(false)
+
     const toggleFavoriteHandle = useCallback(() => {
         setisFavorite((prevState) => !prevState)
+        dispatch(favoriteAction.toggleFavorite(catid))
     }, [isFavorite])
 
     useEffect(() => {
