@@ -4,8 +4,9 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import HeaderButton from '../components/HeaderButton'
 import { DrawerActions } from '@react-navigation/native'
 import Color from '../constants/Color'
-import { CATEGORIES, RECEP } from '../data/dummy-data'
 import DefaultText from '../components/DefaultText'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 const ListItem = (props) => {
     return (
@@ -19,12 +20,11 @@ const ListItem = (props) => {
 
 const MealsDetailScreens = (props) => {
     const catid = props.route.params?.categoriId ?? null
-    const category = CATEGORIES.find((cat) => cat.id === catid)
-    const recep = RECEP.filter((rec) => rec.categoryId === category.id)
+    const category = useSelector(state => state.categori.categori.find(cat => cat.id === catid))
+    const recep = useSelector(state => state.recep.recep.filter((rec) => rec.categoryId === category.id))
     const merge = [...recep, category]
     const [urlImage, seturlImage] = useState("")
     const [isFavorite, setisFavorite] = useState(false)
-
     const toggleFavoriteHandle = useCallback(() => {
         setisFavorite((prevState) => !prevState)
     }, [isFavorite])

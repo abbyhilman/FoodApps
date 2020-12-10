@@ -5,6 +5,9 @@ import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import Color from '../constants/Color'
 import { DrawerActions } from '@react-navigation/native'
 import { CATEGORIES } from '../data/dummy-data'
+import { useDispatch } from 'react-redux'
+import * as CategoriAction from '../store/action/categori'
+
 
 const FilterSwitch = props => {
     return (
@@ -21,6 +24,7 @@ const FilterSwitch = props => {
 }
 
 const FilterScreen = (props) => {
+    const dispatch = useDispatch()
     const [isGlutenFree, setisGlutenFree] = useState(null)
     const cat = CATEGORIES
     const filtercategori = (id) => {
@@ -36,7 +40,7 @@ const FilterScreen = (props) => {
         const appliedFilters = {
             filter: isGlutenFree
         }
-
+        dispatch(CategoriAction.filtercategori(appliedFilters))
         console.log(appliedFilters)
     },
         [isGlutenFree],

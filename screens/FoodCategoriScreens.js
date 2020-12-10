@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { Platform, StyleSheet, Text, View } from 'react-native'
 import HeaderButton from '../components/HeaderButton'
 import {
@@ -8,10 +8,21 @@ import {
 import Color from '../constants/Color';
 import { DrawerActions } from '@react-navigation/native';
 import CategoriGridTitle from "../components/CategoriGridTitle";
-import { CATEGORIES } from "../data/dummy-data";
 import { FlatList } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux'
+import * as CategoriAction from '../store/action/categori';
 
 const FoodCategoriScreens = (props) => {
+    const dispatch = useDispatch()
+    const categori = useSelector((state) => state.categori.categori)
+    const loadCategori = useCallback(async () => {
+        dispatch(CategoriAction.fetchCategori())
+    }, [dispatch])
+
+    useEffect(() => {
+        loadCategori()
+    }, [loadCategori])
+
 
     const renderGridItem = (ItemData) => {
         return (
@@ -31,7 +42,7 @@ const FoodCategoriScreens = (props) => {
     return (
         <FlatList
             numColumns={2}
-            data={CATEGORIES}
+            data={categori}
             renderItem={renderGridItem}
             keyExtractor={(item, index) => item.id}
         />
